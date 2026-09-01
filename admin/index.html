@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BONUS &#9733; Cookies — Админ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="admin">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <img src="../images/logo.png" alt="logo">
+                <span class="sidebar-logo-text">Админ-панель</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a class="sidebar-item active" data-page="dashboard" href="#dashboard">
+                    <span class="sidebar-icon">▦</span>Дашборд
+                </a>
+                <a class="sidebar-item" data-page="products" href="#products">
+                    <span class="sidebar-icon">◉</span>Товары
+                    <span class="badge" id="products-badge">0</span>
+                </a>
+                <a class="sidebar-item" data-page="orders" href="#orders">
+                    <span class="sidebar-icon">✦</span>Заказы
+                    <span class="badge" id="orders-badge">0</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <a class="sidebar-item" href="../index.html" target="_blank">
+                    <span class="sidebar-icon">↗</span>Открыть сайт
+                </a>
+                <button class="sidebar-item" id="logout-btn">
+                    <span class="sidebar-icon">⏻</span>Выйти
+                </button>
+            </div>
+        </aside>
+
+        <button class="burger" id="burger" aria-label="Меню">☰</button>
+
+        <main class="content">
+            <section class="page active" id="page-dashboard">
+                <div class="page-header">
+                    <h1 class="page-title">Дашборд</h1>
+                    <div class="date-chip" id="date-chip"></div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Товаров в каталоге</div>
+                        <div class="stat-value" id="stat-products">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Заказов</div>
+                        <div class="stat-value" id="stat-orders">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Выручка</div>
+                        <div class="stat-value" id="stat-revenue">0 $</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Новых за сегодня</div>
+                        <div class="stat-value" id="stat-today">0</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Продажи по товарам</h2>
+                            <span class="panel-hint">Топ-5</span>
+                        </div>
+                        <div class="chart" id="chart"></div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Последние заказы</h2>
+                            <a class="link-btn" data-page="orders" href="#orders">Все →</a>
+                        </div>
+                        <div class="orders-list" id="recent-orders"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page" id="page-products">
+                <div class="page-header">
+                    <h1 class="page-title">Товары</h1>
+                    <button class="button violet-button" id="add-product-btn">+ Добавить товар</button>
+                </div>
+                <div class="panel">
+                    <div class="toolbar">
+                        <input type="text" class="input search-input" id="product-search" placeholder="Поиск по названию…">
+                    </div>
+                    <div class="products-grid" id="products-grid"></div>
+                </div>
+            </section>
+
+            <section class="page" id="page-orders">
+                <div class="page-header">
+                    <h1 class="page-title">Заказы</h1>
+                    <span class="panel-hint" id="orders-total"></span>
+                </div>
+                <div class="panel">
+                    <div class="toolbar">
+                        <input type="text" class="input search-input" id="order-search" placeholder="Поиск по имени или телефону…">
+                    </div>
+                    <div class="orders-table-wrap" id="orders-table-wrap"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Добавить товар</h2>
+                <button class="modal-close" id="modal-close">×</button>
+            </div>
+            <form id="product-form">
+                <input type="hidden" id="pf-id">
+                <label class="field-block">Название
+                    <input type="text" class="input" id="pf-title" required>
+                </label>
+                <label class="field-block">Описание
+                    <textarea class="input" id="pf-text" rows="3" required></textarea>
+                </label>
+                <div class="field-row">
+                    <label class="field-block">Цена, $
+                        <input type="number" class="input" id="pf-price" min="1" required>
+                    </label>
+                    <label class="field-block">Вес
+                        <input type="text" class="input" id="pf-weight" required>
+                    </label>
+                </div>
+                <label class="field-block">Изображение (имя файла, напр. images/5.png)
+                    <input type="text" class="input" id="pf-image" placeholder="images/1.png" required>
+                </label>
+                <div class="modal-actions">
+                    <button type="button" class="button ghost-button" id="modal-cancel">Отмена</button>
+                    <button type="submit" class="button violet-button">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
