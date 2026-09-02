@@ -237,7 +237,8 @@ body {
    margin-top: 20px;
 }
 
-.order-form-inputs input {
+.order-form-inputs input,
+.order-form-inputs select {
    border: 1px solid white;
    border-radius: 60px;
    margin-bottom: 16px;
@@ -251,6 +252,20 @@ body {
    color: white;
 }
 
+.order-form-inputs select {
+   appearance: none;
+   -webkit-appearance: none;
+   cursor: pointer;
+   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M8 11L2 5h12z'/%3E%3C/svg%3E");
+   background-repeat: no-repeat;
+   background-position: right 22px center;
+}
+
+.order-form-inputs select option {
+   color: #5D3427;
+   background: white;
+}
+
 ::placeholder {
    color: rgba(255, 255, 255, 0.4); /* указали непрозрачность */
 }
@@ -258,6 +273,17 @@ body {
 .order-form-inputs .button.violet-button {
    width: 387px;
    height: 71px;
+}
+
+.order-success {
+   font-family: 'Steppe-Book', sans-serif;
+   font-size: 16px;
+   line-height: 130%;
+   color: white;
+   background: rgba(46, 184, 114, 0.25);
+   border: 1px solid rgba(255, 255, 255, 0.4);
+   border-radius: 16px;
+   padding: 16px 20px;
 }
 
 .order-block-image {

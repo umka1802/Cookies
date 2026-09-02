@@ -49,6 +49,16 @@ function initData() {
         state.orders = clone(SEED_ORDERS);
         saveData();
     }
+
+    /* товары могли быть записаны лендингом (без поля sold) */
+    state.products.forEach(p => {
+        p.sold = Number(p.sold) || 0;
+        p.price = Number(p.price) || 0;
+    });
+}
+
+function persistState() {
+    saveData();
 }
 
 function saveData() {
@@ -260,6 +270,10 @@ function renderOrders() {
     document.querySelector('#orders-badge').textContent = state.orders.length;
     document.querySelector('#orders-total').textContent = 'Всего: ' + filtered.length;
 
+    const cancelled = state.orders.filter(o => o.status === 'cancel').length;
+    document.querySelector('#clear-cancelled-btn').style.display =
+        cancelled ? 'inline-block' : 'none';
+
     const wrap = document.querySelector('#orders-table-wrap');
     if (!sorted.length) {
         wrap.innerHTML = '<div class="empty-state">Заказов не найдено</div>';
@@ -281,6 +295,11 @@ function renderOrders() {
                     <option value="cancel" ${o.status === 'cancel' ? 'selected' : ''}>Отменён</option>
                 </select>
             </td>
+            <td>
+                ${o.status === 'cancel'
+                    ? `<button class="icon-button danger" onclick="deleteOrder(${o.id})" title="Удалить">✕</button>`
+                    : '<span class="muted-cell">—</span>'}
+            </td>
         </tr>
     `).join('');
 
@@ -288,12 +307,32 @@ function renderOrders() {
         <table class="orders-table">
             <thead>
                 <tr>
-                    <th>№</th><th>Имя</th><th>Телефон</th><th>Товар</th><th>Сумма</th><th>Статус</th><th>Изменить</th>
+                    <th>№</th><th>Имя</th><th>Телефон</th><th>Товар</th><th>Сумма</th><th>Статус</th><th>Изменить</th><th>Действия</th>
                 </tr>
             </thead>
             <tbody>${rows}</tbody>
         </table>
     `;
+}
+
+function deleteOrder(id) {
+    const o = state.orders.find(x => x.id === id);
+    if (!o) return;
+    if (!confirm(`Удалить заказ #${o.id} (${o.name})?`)) return;
+    state.orders = state.orders.filter(x => x.id !== id);
+    persistState();
+    renderOrders();
+    showToast('Заказ удалён');
+}
+
+function clearCancelledOrders() {
+    const cancelled = state.orders.filter(o => o.status === 'cancel');
+    if (!cancelled.length) return;
+    if (!confirm(`Удалить все отменённые заказы (${cancelled.length})?`)) return;
+    state.orders = state.orders.filter(o => o.status !== 'cancel');
+    persistState();
+    renderOrders();
+    showToast('Отменённые заказы удалены');
 }
 
 function changeStatus(id, status) {
@@ -368,6 +407,17 @@ function bindEvents() {
     document.querySelector('#order-search').addEventListener('input', e => {
         state.ordersQuery = e.target.value;
         renderOrders();
+    });
+
+    document.querySelector('#clear-cancelled-btn').addEventListener('click', clearCancelledOrders);
+
+    window.addEventListener('storage', e => {
+        if (e.key === STORAGE_KEY) {
+            initData();
+            renderDashboard();
+            renderProducts();
+            renderOrders();
+        }
     });
 
     document.querySelector('#logout-btn').addEventListener('click', () => {

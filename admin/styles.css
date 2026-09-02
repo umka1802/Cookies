@@ -183,6 +183,13 @@ body {
     margin-bottom: 24px;
 }
 
+.page-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .page-title {
     font-family: 'Steppe-ExtraBold', sans-serif;
     font-size: 32px;
@@ -539,6 +546,15 @@ body {
     color: var(--brown);
     cursor: pointer;
     outline: none;
+}
+
+.muted-cell {
+    color: var(--border);
+    padding: 0 10px;
+}
+
+.orders-table-wrap {
+    overflow-x: auto;
 }
 
 /* ===== Modal ===== */
